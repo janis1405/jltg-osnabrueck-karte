@@ -1,0 +1,12 @@
+# Textdateien im Repo einheitlich mit LF, in der Arbeitskopie nach Plattform.
+* text=auto eol=lf
+
+# Binaerdateien niemals anfassen — sonst zerstoert die Zeilenenden-Umwandlung
+# die PDFs beim Auschecken.
+*.pdf   binary
+*.png   binary
+*.jpg   binary
+*.gif   binary
+*.woff  binary
+*.woff2 binary
+*.ttf   binary
