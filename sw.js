@@ -37,6 +37,18 @@ self.addEventListener('install', e => {
 
 self.addEventListener('activate', e => e.waitUntil(self.clients.claim()));
 
+/* Benachrichtigungen des Weckers: Antippen holt die Karte nach vorn, oder
+   oeffnet sie, falls der Browser sie inzwischen verworfen hat. */
+self.addEventListener('notificationclick', e => {
+  e.notification.close();
+  e.waitUntil((async () => {
+    const offen = await self.clients.matchAll({type: 'window', includeUncontrolled: true});
+    const da = offen.find(c => normal(c.url) === normal(SEITE));
+    if (da) return da.focus();
+    return self.clients.openWindow(SEITE);
+  })());
+});
+
 self.addEventListener('fetch', e => {
   const r = e.request;
   if (r.mode !== 'navigate' || r.method !== 'GET' || normal(r.url) !== normal(SEITE)) return;
